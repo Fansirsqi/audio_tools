@@ -6,32 +6,49 @@
 # @File : main.py
 # @SoftWare:
 import os
+import tools
 
-path = r'C:\Users\admin\Desktop\naruto\assets\Audio'
 
-
-def get_filelist(dir):
-    Filelist = []
+def get_filelist(path: str) -> list:
+    file_list = []
 
     for home, dirs, files in os.walk(path):
 
         for filename in files:
             # 文件名列表，包含完整路径
 
-            Filelist.append(os.path.join(home, filename))
+            file_list.append(os.path.join(home, filename))
 
             # # 文件名列表，只包含文件名
 
             # Filelist.append( filename)
 
-    return Filelist
+    return file_list
 
 
 if __name__ == "__main__":
+    path = r'C:\Users\BYSEVEN\Desktop\Naruto\NarutoSenki\assets\Audio'
+    # path2 = r'C:\Users\BYSEVEN\Desktop\Naruto\NarutoSenki\assets\Audio\Effect'
+    # path = 'ts'
+    file_list = get_filelist(path)
+    # file_list2 = get_filelist(path2)
+    # print(len(file_list), len(file_list2))
 
-    Filelist = get_filelist(dir)
+    for i in file_list:
+        format_info = tools.get_media_format_info(i)
+        file_name = i.split('\\').pop()
+        file_name_last = file_name[-1:-4:-1][::-1]
 
-    print(type(Filelist))
-
-    for file in Filelist:
-        print(file)
+        # print(i, i[-1:-4:-1][::-1], format_info)
+        # if i[-1:-4:-1][::-1] == 'ogg':
+        # print(len(i[-1:-4:-1][::-1]), len(format_info))
+        if file_name_last != format_info:
+            print(f'文件名后缀：{file_name_last},实际格式：{format_info}')
+            new_file_name = i.replace(file_name_last, format_info)
+            # print(i, new_file_name)
+            os.rename(i, new_file_name)
+            new_file_name_last = new_file_name.split('\\').pop()
+            print(f'修正文件名{file_name}_to_{new_file_name_last}')
+        if format_info == 'ogg':
+            print(f'转换{new_file_name_last}')
+            tools.trans_any_audio_types(new_file_name, "ogg", "mp3")
