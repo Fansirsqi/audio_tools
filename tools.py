@@ -25,6 +25,7 @@ def trans_any_audio_types(filepath, input_audio_type, output_audio_type):
     song.export(f"{filename}.{output_audio_type}", format=f"{output_audio_type}")
 
 
+# 获取格式信息
 def get_media_format_info(file_path: str):
     info = ffmpeg.probe(file_path)
     return info['format']['format_name']
