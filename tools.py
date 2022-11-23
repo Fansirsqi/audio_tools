@@ -87,4 +87,3 @@ def run_cmd(commend) -> any:
     proc = subprocess.Popen(commend, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True, encoding='utf-8')
     print(proc.stdout.read())
     proc.stdout.close()
-

@@ -1,5 +1,7 @@
-import main
-import re, os
+import os
+import re
+
+from tools import get_filelist
 
 
 # 使用正则表达式替换文件内容
@@ -16,8 +18,9 @@ def update_file(file, old_srt, new_str):
     os.rename("%s.abak" % file, "%s.bak" % file)
 
 
-def get_xml_file(Element_path, hz):
-    ls = main.get_filelist(Element_path)
+# 检索后缀为 hz 的文件
+def get_hz_file(Element_path, hz):
+    ls = get_filelist(Element_path)
     xml_ls = []
     for i in ls:
         last_name = i[-1:-4:-1][::-1]
@@ -27,15 +30,9 @@ def get_xml_file(Element_path, hz):
     return xml_ls
 
 
-def del_file(ls:list):
-    for i in ls:
-        try:
-            os.remove(i)
-        except IOError as e:
-            print(e)
-            print("删除错误")
-
 if __name__ == '__main__':
     # update_file('ts/ts.xml', 'ogg', 'mp3')
     # pass
-    print(get_xml_file(r'C:\Users\BYSEVEN\Desktop\Naruto\NarutoSenki\assets\Element', 'bak'))
+    ls = get_hz_file(r'C:\Users\BYSEVEN\Desktop\yuan_pan\Tendo\Element', 'xml')
+    for i in ls:
+        update_file(i, "ogg", "mp3")
