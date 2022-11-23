@@ -5,11 +5,10 @@
 # @Author : Byseven
 # @File : main.py
 # @SoftWare:
-import os
 import sys
 
 import tools
-import xmltool
+from xmltool import *
 
 
 def fix_av_format(file_path: str):
@@ -107,7 +106,7 @@ def audio_conversion(file_path, set_format):  # 路径，格式
                     print(e)
                     print(f'删除源{old_file[0]}文件出错')
 
-    print(f'本次转换音频{count}个\n删除ogg文件{del_count}个')
+    print(f'本次转换音频{count}个\n删除源文件{del_count}个')
     # for i in file_name_ls:
     #     print(i)
 
@@ -155,7 +154,18 @@ def image_conversion(file_path, set_format):
 
 def to_xml(xml_path):
     for item in xml_path:
-        xmltool.update_file(item, 'ogg', 'mp3')
+        update_file(item, 'ogg', 'mp3')
+        update_file(item, 'wav', 'mp3')
+
+
+# 删除列表文件
+def del_list_file(ls: list):
+    for i in ls:
+        try:
+            os.remove(i)
+        except IOError as e:
+            print(e)
+            print("删除错误")
 
 
 if __name__ == "__main__":
@@ -170,6 +180,11 @@ if __name__ == "__main__":
         audio_conversion(path, for_mat)
     elif select == 'image':
         image_conversion(path, "png")
+    elif select == 'xml':
+        xml_ls = get_hz_file(path, 'xml')
+        bak_ls = get_hz_file(path, 'bak')
+        to_xml(xml_ls)
+        del_list_file(bak_ls)
     # path = r'D:\xxxx\assets\Element'
     # fix_im_forma(path)
     # 将一些不知名格式图片转换成png 有删除源文件风险
