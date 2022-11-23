@@ -6,3 +6,5 @@
 `python main.py fixaudio xxx/xxx路径`
 ## 自动修复图片资源名称
 `python main.py fiximage xxx/xxx路径`
+## 自动修修改xml中的ogg为mp3
+`python main.py xml xxx/xxx路径`
