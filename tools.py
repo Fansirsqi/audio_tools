@@ -1,8 +1,7 @@
 # _*_coding:utf-8_*_
+import ffmpeg
 import os
 import subprocess
-
-import ffmpeg
 from pydub import AudioSegment
 
 
@@ -73,7 +72,7 @@ def b_rename(old_path: str, new_path: str):
     on, onl = set_name_info(old_path)
     n, nl = set_name_info(new_path)
     if os.path.exists(new_path):
-        print(f'{n}已存在， 无法重命名')
+        print(f'{n}已存在， 无法重命名,请考虑删除？')
     else:
         try:
             os.rename(old_path, new_path)
@@ -87,3 +86,8 @@ def run_cmd(commend) -> any:
     proc = subprocess.Popen(commend, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True, encoding='utf-8')
     print(proc.stdout.read())
     proc.stdout.close()
+
+
+def set_log(name: str, w_str: str) -> any:
+    with open(name + '_log.txt', mode='a', encoding='utf-8') as f:
+        f.write(w_str + '\n')

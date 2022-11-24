@@ -15,32 +15,39 @@ def fix_av_format(file_path: str):
     del_count = 0
     rename_count = 0
     file_list = tools.get_filelist(file_path)
+    fix_li = []
     print('修正前------------------------------')
-    for old_file_path_list_item in file_list:
-        #  old_file_path_list_item 子目录完整路径
-        # print(old_file_path_list_item)  # 输出未修正前的文件名列表
-        format_info = tools.get_av_media_format_info(old_file_path_list_item)
-        file_name = old_file_path_list_item.split('\\').pop()
-        file_name_last = file_name[-1:-4:-1][::-1]
-        if file_name_last != format_info:
-            print(f'{file_name} 文件名后缀：{file_name_last}, 实际格式：{format_info}')
-            new_file_path_list_item = old_file_path_list_item.replace(file_name_last, format_info)
-            new_file_name = new_file_path_list_item.split('\\').pop()
-            if os.path.exists(new_file_path_list_item):  # 如果新文件已经存在，则取消重命名，直接删除源文件,无需做转换处理
-                os.remove(old_file_path_list_item)
-                print(f'已存在{new_file_name}故,删除{file_name}')
+    for old_file_path in file_list:
+        #  old_file_path 子目录完整路径
+        # print(old_file_path)  # 输出未修正前的文件名列表
+        format_info = tools.get_av_media_format_info(old_file_path)
+        old_file = tools.set_name_info(old_file_path)
+        print(old_file[0])
+        if old_file[1] != format_info:
+            log_1 = f'{old_file[0]} 文件名后缀：{old_file[1]}, 与实际格式：{format_info}不符合！！'
+            tools.set_log('fix_audio', log_1)
+            new_file_path = old_file_path.replace(old_file[1], format_info)
+            new_file = tools.set_name_info(new_file_path)
+            if os.path.exists(new_file_path):  # 如果新文件已经存在，则取消重命名，直接删除源文件,无需做转换处理
+                os.remove(old_file_path)
+                logs = f'已存在{new_file[1]}故,删除{old_file[1]}'
+                tools.set_log('fix_audio', logs)
                 del_count += 1
-            else:  # 否则就修正该文件的后缀
-                os.rename(old_file_path_list_item, new_file_path_list_item)
-                print(old_file_path_list_item, new_file_name)
+            else:  # 目标文件不存在，则就修正该文件的后缀
+                tools.b_rename(old_file_path, new_file_path)
+                logs = f'rename {old_file[0]} to {new_file[0]}'
+                tools.set_log('fix_audio', logs)
                 rename_count += 1
-                new_file_name_last = new_file_name[-1:-4:-1][::-1]
-                print(f'新文件名后缀{new_file_name_last}')
-                print(f'修正文件名{file_name} -------> {new_file_name_last}')
+                fix_li.append(f'{old_file[0]}------>{new_file[0]}')
+
     file_lis_new = tools.get_filelist(file_path)
     print('修正后------------------------------')
-    for new_file_path_list_item in file_lis_new:
-        print(new_file_path_list_item)
+    for new_file_path in file_lis_new:
+        nfn = tools.set_name_info(new_file_path)
+        print(nfn[0])
+    print('修正列表------------------------------')
+    for lg in fix_li:
+        print(lg)
     print(f'-本次整理删除{del_count}个文件，重命名{rename_count}个文件-')
 
 

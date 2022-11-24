@@ -1,6 +1,11 @@
 import os
+import os
 import re
+import re
+import xml
+import xml.dom.minidom
 
+import tools
 from tools import get_filelist
 
 
@@ -30,9 +35,43 @@ def get_hz_file(Element_path, hz):
     return xml_ls
 
 
+def del_file(ls: list):
+    for i in ls:
+        try:
+            os.remove(i)
+        except IOError as e:
+            print(e)
+            print("删除错误")
+
+
+# 转换xml至117
+def to_old(f, ):
+    update_file(f, '<unit>', ' <animation>')
+    update_file(f, 'type="cd', 'type="coldDown')
+    update_file(f, '<data>', '<date>')
+    update_file(f, '</data>', '</date>')
+    update_file(f, '<p type', '<dateName type')
+    update_file(f, '</p>', '</dateName>')
+    update_file(f, '<f>', '<frameName>')
+    update_file(f, '</f>', '</frameName>')
+    update_file(f, '<e type', '<eventName type')
+    update_file(f, '</e>', '</eventName>')
+    update_file(f, '</unit>', '</animation>')
+
+
+# 格式化代码，但是很拉
+def pretty_xml(file):
+    new_file = '%s.bak' % file
+    with open(file, 'r', encoding='utf-8') as f1, open(new_file, 'w', encoding='utf-8') as f2:
+        ugly_xml = f1.read()
+        xml_c = xml.dom.minidom.parseString(ugly_xml)
+        xml_pretty_str = xml_c.toprettyxml()
+        f2.write(xml_pretty_str)
+    os.remove(file)
+    os.rename(new_file, file)
+
+
 if __name__ == '__main__':
     # update_file('ts/ts.xml', 'ogg', 'mp3')
     # pass
-    ls = get_hz_file(r'C:\Users\BYSEVEN\Desktop\yuan_pan\Tendo\Element', 'xml')
-    for i in ls:
-        update_file(i, "ogg", "mp3")
+    print(get_xml_file(r'C:\Users\BYSEVEN\Desktop\Naruto\NarutoSenki\assets\Element', 'bak'))
