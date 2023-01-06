@@ -7,7 +7,7 @@
 # @SoftWare:
 import sys
 
-import tools
+import trans
 from xmltool import *
 
 
@@ -85,6 +85,7 @@ def audio_conversion(file_path, set_format):  # 路径，格式
     for old_file_path in file_list:
         # print(old_file_path)
         format_info = tools.get_av_media_format_info(old_file_path)  # 原格式
+        # print(f'源格式-》{format_info}')
         if format_info != set_format:
             old_file = tools.set_name_info(old_file_path)
             new_file_path = old_file_path.replace(old_file[1], set_format)
@@ -101,6 +102,10 @@ def audio_conversion(file_path, set_format):  # 路径，格式
                     print(f'删除源{old_file[0]}文件出错')
             else:
                 # 执行转换
+                print(f'参数1{old_file_path}\n'
+                      f'参数2{format_info}\n'
+                      f'参数3{set_format}\n'
+                      f'删除的是{old_file_path}')
                 tools.trans_any_audio_types(old_file_path, format_info, set_format)
                 file_name_ls.append(old_file[0])
                 count += 1
@@ -118,6 +123,7 @@ def audio_conversion(file_path, set_format):  # 路径，格式
     #     print(i)
 
 
+# 图像转换
 def image_conversion(file_path, set_format):
     file_list = tools.get_filelist(file_path)
     count = 0
@@ -192,6 +198,8 @@ if __name__ == "__main__":
         bak_ls = get_hz_file(path, 'bak')
         to_xml(xml_ls)
         del_list_file(bak_ls)
+    elif select == 'pltoat':
+        trans.p_plist_to(path)
     # path = r'D:\xxxx\assets\Element'
     # fix_im_forma(path)
     # 将一些不知名格式图片转换成png 有删除源文件风险

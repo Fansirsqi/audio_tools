@@ -1,6 +1,4 @@
 import os
-import os
-import re
 import re
 import xml
 import xml.dom.minidom
@@ -44,6 +42,78 @@ def del_file(ls: list):
             print("删除错误")
 
 
+def find_code(file_path):
+    Sounds = r'Sound">(.*?)</'
+    Mons = r'setMon">(.*?)</'
+    Bulls = r'setBullet">(.*?)</'
+    path_ls = get_hz_file(file_path, 'xml')
+    print('++++++')
+    for p in path_ls:
+        file_name = p.split("\\").pop()
+        print(f'文件名:{file_name}')
+        with open(p, 'r', encoding='utf-8') as f:
+            res = f.read()
+        Sounds_ls = re.findall(Sounds, res, re.S)
+        print(Sounds_ls)
+        Mons_ls = re.findall(Mons, res, re.S)
+        Bulls_ls = re.findall(Bulls, res, re.S)
+        print('-------声音资源-------')
+        for i in Sounds_ls:
+            print(i)
+        print('-------通灵-------')
+        for j in Mons_ls:
+            print(j)
+        print('-------飞行物-------')
+        for k in Bulls_ls:
+            print(k)
+
+
+def clen_mod_sounds(xml_path, audio_path):
+    Sounds = r'Sound">(.*?)</'
+    path_ls = get_hz_file(xml_path, 'xml')
+    for file_name_path in path_ls:
+
+        file_name = file_name_path.split("\\").pop()
+        with open(file_name_path, 'r', encoding='utf-8') as f:
+            res = f.read()
+        # xml中引用的声音列表
+        Sounds_ls = re.findall(Sounds, res, re.S)
+        x_l = []
+        for yin in Sounds_ls:
+            y = yin.split('/').pop().split('.')[0]
+            x_l.append(y)
+        true_sounds_ls = get_filelist(audio_path)
+        # audio文件夹
+        t_l = []
+        for t in true_sounds_ls:
+            yt = t.split('\\').pop().split('.')[0]
+            t_l.append(yt)
+
+        print(f'----------文件名:{file_name}')
+        for check in x_l:
+            if check not in t_l:
+                print(f'{check} 在资源中不存在')
+        for rechack in t_l:
+            if rechack not  in x_l:
+                print(f'{rechack} 未曾使用')
+        # print(f'{x_l}')
+        # print(f'{t_l}')
+
+
+
+
+        # if y in x_l:
+        #     pass
+        #     # print(f'存在{y}')
+        # else:
+        #     pass
+        # print(f"不存在{y}")
+    # print(x_l)
+    # print(t_l)
+    # print(f'实际：{ture_sounds_ls}')
+    # print(f'引用：{Sounds_ls}')
+
+
 # 转换xml至117
 def to_old(f, ):
     update_file(f, '<unit>', ' <animation>')
@@ -74,4 +144,5 @@ def pretty_xml(file):
 if __name__ == '__main__':
     # update_file('ts/ts.xml', 'ogg', 'mp3')
     # pass
-    print(get_xml_file(r'C:\Users\BYSEVEN\Desktop\Naruto\NarutoSenki\assets\Element', 'bak'))
+    # (r'C:\Users\BYSEVEN\Desktop\Naruto\NarutoSenki\assets\Element', 'bak')
+    pass

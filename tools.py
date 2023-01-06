@@ -1,7 +1,11 @@
 # _*_coding:utf-8_*_
-import ffmpeg
+
 import os
+import plistlib
 import subprocess
+from pathlib import Path
+
+import ffmpeg
 from pydub import AudioSegment
 
 
@@ -38,6 +42,9 @@ def trans_any_audio_types(filepath, input_audio_type, output_audio_type) -> any:
     song.export(f"{filename}.{output_audio_type}", format=f"{output_audio_type}")
 
 
+# trans_any_audio_types(r'D:\audio_tools\ts\Tsunade\S1.wav', 'wav', 'mp3')
+
+
 # 获取音视频格式信息
 def get_av_media_format_info(file_path: str) -> str:
     info = ffmpeg.probe(file_path)
@@ -52,8 +59,13 @@ def get_im_media_format_info(file_path: str) -> any:
     return rs[0]
 
 
-# 获取文件名，文件名后缀
 def get_name_info(file_path: str) -> any:
+    """
+    获取文件名，文件名后缀
+    Args:文件路径
+        file_path:
+    Returns:
+    """
     if os.path.isfile(file_path):
         file_name = file_path.split('\\').pop()
         file_name_last = file_name.split('.').pop()
@@ -63,6 +75,12 @@ def get_name_info(file_path: str) -> any:
 
 
 def set_name_info(file_path: str) -> list:
+    """
+    生成文件名，后缀
+    Args:
+        file_path:文件路径
+    Returns:
+    """
     file_name = file_path.split('\\').pop()
     file_name_last = file_name.split('.').pop()
     return [file_name, file_name_last]
@@ -91,3 +109,7 @@ def run_cmd(commend) -> any:
 def set_log(name: str, w_str: str) -> any:
     with open(name + '_log.txt', mode='a', encoding='utf-8') as f:
         f.write(w_str + '\n')
+
+
+
+

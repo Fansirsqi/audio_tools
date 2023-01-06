@@ -15,9 +15,16 @@ cmd = "ping www.baidu.com"
 
 # 实时打印cmd_log
 def run_cmd(commend):
+    """
+    获取运行CMD的返回
+    Args:
+        commend: 要执行的cmd命令
+    Returns:
+
+    """
     proc = subprocess.Popen(commend, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True, encoding='gbk')
     print(proc.stdout.read())
     proc.stdout.close()
 
 
-run_cmd(cmd)
+run_cmd("ping www.baidu.com")
