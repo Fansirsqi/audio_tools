@@ -9,8 +9,6 @@
 ## 自动修修改`xml`中的`ogg`为`mp3`
 `python main.py xml xxx/xxx路径`
 ## 将新版`plist`批量转换成`atlas`
-<h5><font color='red'>
-!!请将欲转换的文件全部拷贝至ts文件夹下面<br>
-你甚至可以将整个项目拷贝进来，再执行一下代码
-</font><br></h5>
+##### !!请将欲转换的文件全部拷贝至ts文件夹下面
+##### 你甚至可以将整个项目拷贝进来，再执行一下代码
 `python main.py pltoat .\ts`
