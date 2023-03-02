@@ -48,11 +48,30 @@ def plist_to_atlas(file_path):
         print("plist文件不存在！")
     else:
         print("读取plist..")
+<<<<<<< HEAD
     file_name = file_path.replace('plist', 'atlas')
+=======
+    print(file_path)
+    file_name = file_path.replace('plist', 'atlas')
+    print(file_name)
+
+    # if os.path.exists(file_name):
+    #     print('不存在-创建')
+    #     with open(file_name, mode='r', encoding='utf-8') as ff:
+    #         print(ff.readlines())
+    # else:
+    #     with open(file_name, mode='w', encoding='utf-8') as ff:
+    #         print("文件创建成功！")
+
+>>>>>>> 389b1710e992473ab7e6abb736dc7157e404eb69
     # file_name = (file_path.split('\\').pop().split('.')[0])
     pl = plistlib.load(open(plist_conf, 'rb'))
     # 写入文件头部
     info = pl['metadata']
+<<<<<<< HEAD
+=======
+    print(info)
+>>>>>>> 389b1710e992473ab7e6abb736dc7157e404eb69
     data = ['textureFileName', 'size', 'pixelFormat']
     for key in data:
         if key not in info.keys():
